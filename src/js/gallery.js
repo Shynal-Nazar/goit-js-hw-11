@@ -1,11 +1,12 @@
 import { fetchPictures } from './pixabayApi';
 import { LoadMoreBtn } from './loadMore';
+import { renderPictures } from './render';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const formEl = document.querySelector('#search-form');
-const galleryWrap = document.querySelector('.gallery');
+export const galleryWrap = document.querySelector('.gallery');
 let formData = '';
 const perPage = 40;
 let page = 1;
@@ -39,45 +40,7 @@ function onSubmitForm(evt) {
     }
 }
 
-function renderPictures(pictures) {
-    const murkup = pictures
-        .map(
-            ({
-                webformatURL,
-                largeImageURL,
-                tags,
-                likes,
-                views,
-                comments,
-                downloads,
-            }) => `<a class=" photo-card" href="${largeImageURL}">
-        <div class="gallery__item">
-          <img src="${webformatURL}" alt="${tags}" loading="lazy"/>
-          </div>
-          <div class="info">
-    <p class="info-item">
-      <b class="info-item-title">Likes</b>
-      ${likes}
-    </p>
-    <p class="info-item">
-      <b class="info-item-title">Views</b>
-      ${views}
-    </p>
-    <p class="info-item">
-      <b class="info-item-title">Comments</b>
-      ${comments}
-    </p>
-    <p class="info-item">
-      <b class="info-item-title">Downloads</b>
-      ${downloads}
-    </p>
-  </div>
-</a>`,
-        )
-        .join('');
 
-    galleryWrap.insertAdjacentHTML('beforeend', murkup);
-}
 
 async function loadPictures(formData) {
     const dataFromApi = await fetchPictures(formData, page, perPage);
